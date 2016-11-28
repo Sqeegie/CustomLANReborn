@@ -8,7 +8,7 @@ public class CommandLANBase extends CommandBase
 {
 	public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
 	{
-		return (GuiCustomLANRebornPermissions.canSenderUse(getCommandName(), par1ICommandSender)) || (par1ICommandSender.canCommandSenderUseCommand(getRequiredPermissionLevel(), getCommandName()));
+		return (GuiCustomLANRebornPermissions.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(getRequiredPermissionLevel(), getCommandName());
 	}
 
 	public String getCommandName()

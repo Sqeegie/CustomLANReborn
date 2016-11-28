@@ -1,6 +1,5 @@
 package com.sqeegie.customlanreborn.commands;
 
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

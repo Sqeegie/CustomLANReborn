@@ -1,14 +1,3 @@
-/*
- * Decompiled with CFR 0_115.
- * 
- * Could not load the following classes:
- *  net.minecraft.command.ICommandSender
- *  net.minecraft.command.WrongUsageException
- *  net.minecraft.entity.player.EntityPlayerMP
- *  net.minecraft.server.MinecraftServer
- *  net.minecraft.util.ChatComponentTranslation
- *  net.minecraft.util.IChatComponent
- */
 package com.sqeegie.customlanreborn.commands;
 
 import com.sqeegie.customlanreborn.commands.CommandLANBase;
@@ -29,7 +18,7 @@ extends CommandLANBase {
 
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
-        return true;
+        return true; // Anyone can use this command.
     }
 
     @Override

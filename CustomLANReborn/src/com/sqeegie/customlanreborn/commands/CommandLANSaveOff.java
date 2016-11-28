@@ -1,11 +1,3 @@
-/*
- * Decompiled with CFR 0_115.
- * 
- * Could not load the following classes:
- *  net.minecraft.command.ICommandSender
- *  net.minecraft.server.MinecraftServer
- *  net.minecraft.world.WorldServer
- */
 package com.sqeegie.customlanreborn.commands;
 
 import com.sqeegie.customlanreborn.commands.CommandLANBase;

@@ -1,18 +1,4 @@
 package com.sqeegie.customlanreborn.commands;
-/*
- * Decompiled with CFR 0_115.
- * 
- * Could not load the following classes:
- *  net.minecraft.client.Minecraft
- *  net.minecraft.command.ICommandSender
- *  net.minecraft.command.WrongUsageException
- *  net.minecraft.entity.player.EntityPlayerMP
- *  net.minecraft.server.MinecraftServer
- *  net.minecraft.server.management.ServerConfigurationManager
- *  net.minecraft.util.ChatComponentTranslation
- *  net.minecraft.util.IChatComponent
- */
-
 
 import java.io.BufferedReader;
 import java.io.File;

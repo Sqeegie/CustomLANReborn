@@ -1,19 +1,3 @@
-/*
- * Decompiled with CFR 0_115.
- * 
- * Could not load the following classes:
- *  net.minecraft.command.ICommandSender
- *  net.minecraft.command.WrongUsageException
- *  net.minecraft.entity.Entity
- *  net.minecraft.entity.EntityLivingBase
- *  net.minecraft.entity.player.EntityPlayerMP
- *  net.minecraft.entity.projectile.EntityFireball
- *  net.minecraft.entity.projectile.EntityLargeFireball
- *  net.minecraft.server.MinecraftServer
- *  net.minecraft.util.Vec3
- *  net.minecraft.world.World
- *  net.minecraft.world.WorldServer
- */
 package com.sqeegie.customlanreborn.commands;
 
 import java.util.List;
@@ -43,7 +27,7 @@ extends CommandLANBase {
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
         //return GuiCustomLANRebornPermissions.canSenderUse(this.getCommandName()) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
-        return (GuiCustomLANRebornPermissions.canSenderUse(getCommandName(), par1ICommandSender)) || (par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName()));
+        return (GuiCustomLANRebornPermissions.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
     }
 
     @Override

@@ -1,17 +1,3 @@
-/*
- * Decompiled with CFR 0_115.
- * 
- * Could not load the following classes:
- *  net.minecraft.client.resources.I18n
- *  net.minecraft.command.ICommandSender
- *  net.minecraft.server.MinecraftServer
- *  net.minecraft.server.management.ServerConfigurationManager
- *  net.minecraft.util.ChatComponentTranslation
- *  net.minecraft.util.IChatComponent
- *  net.minecraft.util.IProgressUpdate
- *  net.minecraft.world.MinecraftException
- *  net.minecraft.world.WorldServer
- */
 package com.sqeegie.customlanreborn.commands;
 
 import com.sqeegie.customlanreborn.commands.CommandLANBase;
@@ -38,6 +24,8 @@ extends CommandLANBase {
         return 2;
     }
 
+    // TODO: Add permissions so server owner can use this set of commands.
+    
     @Override
     public void processCommand(ICommandSender par1ICommandSender, String[] par2ArrayOfStr) {
         MinecraftServer var3 = MinecraftServer.getServer();

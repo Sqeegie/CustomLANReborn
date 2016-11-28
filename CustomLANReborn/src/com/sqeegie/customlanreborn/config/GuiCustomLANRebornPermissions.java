@@ -60,6 +60,9 @@ public class GuiCustomLANRebornPermissions extends GuiScreen
 		permMap.put("tp", Integer.valueOf(OPOnly));
 		permMap.put("sethome", Integer.valueOf(Everyone));
 		permMap.put("home", Integer.valueOf(Everyone));
+		permMap.put("save-all", Integer.valueOf(OPOnly));
+		permMap.put("save-on", Integer.valueOf(OPOnly));
+		permMap.put("save-off", Integer.valueOf(OPOnly));
 		permMap.put("setspawn", Integer.valueOf(OPOnly));
 		permMap.put("spawn", Integer.valueOf(Everyone));
 		permMap.put("setwarp", Integer.valueOf(OPOnly));

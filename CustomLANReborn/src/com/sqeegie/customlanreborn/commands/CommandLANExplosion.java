@@ -1,20 +1,4 @@
 package com.sqeegie.customlanreborn.commands;
-/*
- * Decompiled with CFR 0_115.
- * 
- * Could not load the following classes:
- *  net.minecraft.command.ICommandSender
- *  net.minecraft.command.WrongUsageException
- *  net.minecraft.entity.Entity
- *  net.minecraft.entity.player.EntityPlayerMP
- *  net.minecraft.server.MinecraftServer
- *  net.minecraft.util.MovingObjectPosition
- *  net.minecraft.util.Vec3
- *  net.minecraft.world.ChunkPosition
- *  net.minecraft.world.Explosion
- *  net.minecraft.world.World
- */
-
 
 import java.util.List;
 
@@ -45,7 +29,7 @@ extends CommandLANBase {
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
         //return GuiCustomLANRebornPermissions.canSenderUse(this.getCommandName()) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
-        return (GuiCustomLANRebornPermissions.canSenderUse(getCommandName(), par1ICommandSender)) || (par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName()));
+        return (GuiCustomLANRebornPermissions.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
     }
 
     public int getRequiredPermissionLevel() {
@@ -83,7 +67,7 @@ extends CommandLANBase {
         }
         else
         {
-            worldServer.newExplosion((Entity)player, mop.blockX, mop.blockY, mop.blockZ, 4.0f, true, true);
+            worldServer.newExplosion((Entity)player, mop.blockX, mop.blockY, mop.blockZ, 6.0f, true, true);
         }
     }
 
