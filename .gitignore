@@ -45,13 +45,16 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-CustomLANReborn/bin/
-CustomLANReborn/.classpath
-Forge 1.7.10 (1614)/
-CustomLANReborn/mods/.gradle/
-CustomLANReborn/.project
-CustomLANReborn/.gradle/
 .metadata/
-CustomLANReborn/logs/
 .recommenders/
+Forge 1.7.10 (1614)/
+CustomLANReborn/.classpath
+CustomLANReborn/.project
+CustomLANReborn/ops.json
+CustomLANReborn/options.txt
+CustomLANReborn/usernamecache.json
+CustomLANReborn/logs/
 CustomLANReborn/saves/
+CustomLANReborn/bin/
+CustomLANReborn/.gradle/
+CustomLANReborn/mods/.gradle/
