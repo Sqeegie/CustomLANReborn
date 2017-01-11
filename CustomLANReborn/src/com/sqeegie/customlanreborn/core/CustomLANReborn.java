@@ -1,6 +1,5 @@
 package com.sqeegie.customlanreborn.core;
 
-import com.mojang.authlib.GameProfile;
 import com.sqeegie.customlanreborn.commands.CommandLANBack;
 import com.sqeegie.customlanreborn.commands.CommandLANBroadcast;
 import com.sqeegie.customlanreborn.commands.CommandLANEat;
@@ -29,292 +28,134 @@ import com.sqeegie.customlanreborn.commands.CommandLANTp;
 import com.sqeegie.customlanreborn.commands.CommandLANViewMOTD;
 import com.sqeegie.customlanreborn.commands.CommandLANWarp;
 import com.sqeegie.customlanreborn.commands.CommandLANWarpList;
-import com.sqeegie.customlanreborn.config.*;
+import com.sqeegie.customlanreborn.handlers.*;
+import com.sqeegie.customlanreborn.util.CommonUtil;
+import com.sqeegie.customlanreborn.util.PlayerUtil;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.EventBus;
-import java.io.BufferedReader;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileOutputStream;
 import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.Properties;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiIngameMenu;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiShareToLan;
 import net.minecraft.command.ICommandManager;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.PlayerSelector;
 import net.minecraft.command.ServerCommandManager;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.BanList;
-import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.server.management.ServerConfigurationManager;
-import net.minecraft.server.management.UserListBans;
-import net.minecraft.server.management.UserListOps;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid="customlanreborn", name="CustomLAN Reborn", useMetadata=true, version="2.4.2", guiFactory="com.sqeegie.customlanreborn.config.CustomLANRebornConfig")
-public class CustomLANReborn
-{
+@Mod(modid = CustomLANReborn.MODID, name = CustomLANReborn.NAME, useMetadata = true, version = CustomLANReborn.VERSION, guiFactory = "com.sqeegie.customlanreborn.handlers.ConfigHandler")
+public class CustomLANReborn {
+
+	public static final String MODID = "CustomLAN";
+	public static final String NAME = "CustomLAN Reborn";
+	public static final String VERSION = "2.4.2";
+	
+	public static Configuration config;
 	public static File optionsServer = new File(Minecraft.getMinecraft().mcDataDir + "/config/CustomLANReborn/", "lastendpoint.cfg");
 	public static File options = new File(Minecraft.getMinecraft().mcDataDir + "/config/CustomLANReborn/", "options.cfg");
 	public static Logger logger;
-	public static File ops = new File(Minecraft.getMinecraft().mcDataDir + "/config/CustomLANReborn/", "ops.cfg");
-	public static Set opslist = new HashSet();
-	public static Configuration config;
-	public static File bannedPlayersFile = ServerConfigurationManager.field_152613_a;
-	public static File bannedIPsFile = ServerConfigurationManager.field_152614_b;
-	public static File opsFile = ServerConfigurationManager.field_152615_c;
-	public static UserListBans bannedPlayers;
-	private static BanList bannedIPs;
-	@Mod.Instance
+
+	@Instance
 	public static CustomLANReborn instance = new CustomLANReborn();
 
-	@Mod.EventHandler
-	public void preInit(FMLPreInitializationEvent event)
-	{
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
 		logger.info("Loading CustomLAN Reborn..");
 
-		FMLCommonHandler.instance().bus().register(new CustomLANRebornTick());
 		FMLCommonHandler.instance().bus().register(instance);
+	    FMLCommonHandler.instance().bus().register(new TickHandler());
 		config = new Configuration(options);
-		syncConfig();
+		ConfigHandler.GuiCustomLan.syncConfig();
 	}
 
-	@Mod.EventHandler
-	public void init(FMLInitializationEvent event) {}
-
-	@Mod.EventHandler
-	public void postInit(FMLPostInitializationEvent event)
-	{
+	@EventHandler
+	public void postInit(FMLPostInitializationEvent event) {
 		logger.info("Loaded CustomLAN Reborn.");
 	}
 
-	public boolean registerBus(EventBus bus, LoadController controller)
-	{
+	public boolean registerBus(EventBus bus, LoadController controller) {
 		bus.register(this);
 		return true;
 	}
-
-	@Mod.EventHandler
-	public void onServerStarting(FMLServerStartingEvent event)
-	{
-		registerCommands();
-		GuiCustomLANRebornPermissions.initMap();
-		GuiCustomLANRebornPermissions.checkOptions();
-
-		bannedPlayers = new UserListBans(bannedPlayersFile);
-		bannedIPs = new BanList(bannedIPsFile);
-		bannedPlayers.func_152686_a(true);
-		bannedIPs.func_152686_a(true);
-		loadOps();
+	
+	@EventHandler
+	public void onServerStarting(FMLServerStartingEvent event) {
+		CustomLANReborn.registerCommands();
+		PermissionsHandler.initMap();
+		PermissionsHandler.checkOptions();
+		
+		event.getServer().getConfigurationManager().getBannedIPs().func_152686_a(true);
+		event.getServer().getConfigurationManager().func_152608_h().func_152686_a(true);
+		PermissionsHandler.loadOps();
 	}
 
-	@Mod.EventHandler
-	public void onServerStarted(FMLServerStartedEvent event)
-	{
-		MinecraftServer server = MinecraftServer.getServer();
-		server.setAllowFlight(CustomLANRebornConfig.GuiCustomLan.getServerAllowFlight());
-		server.setAllowPvp(CustomLANRebornConfig.GuiCustomLan.getServerAllowPvP());
-		server.setCanSpawnAnimals(CustomLANRebornConfig.GuiCustomLan.getServerCanSpawnAnimals());
-		server.setCanSpawnNPCs(CustomLANRebornConfig.GuiCustomLan.getServerCanSpawnNPCs());
-		server.setMOTD(CustomLANRebornConfig.GuiCustomLan.getServerMOTD());
-		server.setOnlineMode(CustomLANRebornConfig.GuiCustomLan.getServerOnlineMode());
+	@EventHandler
+	public void onServerStarted(FMLServerStartedEvent event) {
+		setServerConfigOptions();
+		
 		Field maxPlayersField = null;
-		try
-		{
-			maxPlayersField = ServerConfigurationManager.class.getDeclaredField("field_72405_c");
+		try {
+			maxPlayersField = ServerConfigurationManager.class.getDeclaredField("field_72405_c"); // Old obf name?
 		}
-		catch (Exception e)
-		{
-			try
-			{
-				maxPlayersField = ServerConfigurationManager.class.getDeclaredField("b");
+		catch (Exception e) {
+			try {
+				maxPlayersField = ServerConfigurationManager.class.getDeclaredField("b"); // Old obf name?
 			}
-			catch (Exception e2)
-			{
-				try
-				{
+			catch (Exception e2) {
+				try {
 					maxPlayersField = ServerConfigurationManager.class.getDeclaredField("maxPlayers");
 				}
-				catch (Exception e3)
-				{
-					logger.error("Unable to access private fields. Are you using the wrong version?");
+				catch (Exception e3) {
+					CustomLANReborn.logger.error("Unable to access private fields. Are you using the wrong version?");
 				}
 			}
 		}
-		try
-		{
+		try {
 			maxPlayersField.setAccessible(true);
-			maxPlayersField.set(server.getConfigurationManager(), Integer.valueOf(CustomLANRebornConfig.GuiCustomLan.getServerMaxPlayers()));
-			logger.info("Max players set to " + CustomLANRebornConfig.GuiCustomLan.getServerMaxPlayers());
+			maxPlayersField.set(CommonUtil.mcServer().getConfigurationManager(), Integer.valueOf(ConfigHandler.GuiCustomLan.getServerMaxPlayers()));
+			CustomLANReborn.logger.info("Max players set to " + ConfigHandler.GuiCustomLan.getServerMaxPlayers());
 		}
-		catch (IllegalAccessException e)
-		{
-			logger.error("Unable to set max players: " + e);
-		}
-	}
-
-	public static EntityPlayerMP getPlayerByUsername(String username)
-	{
-		MinecraftServer mc = MinecraftServer.getServer();
-		if (mc == null) {
-			return null;
-		}
-		ServerConfigurationManager configurationManager = mc.getConfigurationManager();
-		return configurationManager == null ? null : configurationManager.func_152612_a(username);
-	}
-
-	public static EntityPlayerMP getPlayerByMatchOrUsername(ICommandSender sender, String match)
-	{
-		EntityPlayerMP player = PlayerSelector.matchOnePlayer(sender, match);
-		if (player != null) {
-			return player;
-		}
-		return getPlayerByUsername(match);
-	}
-
-	public static GameProfile getGameProfileByUsername(String username)
-	{
-		EntityPlayer player = getPlayerByUsername(username);
-		if (player != null)
-		{
-			if (!player.getGameProfile().isComplete()) {
-				return new GameProfile(UUID.nameUUIDFromBytes(username.getBytes()), player.getCommandSenderName());
-			}
-			return player.getGameProfile();
-		}
-		return new GameProfile(UUID.nameUUIDFromBytes(username.getBytes()), username);
-	}
-
-	public static MovingObjectPosition getPlayerLookingSpot(EntityPlayer player)
-	{
-		if ((player instanceof EntityPlayerMP)) {
-			return getPlayerLookingSpot(player, ((EntityPlayerMP) player).theItemInWorldManager.getBlockReachDistance());
-		}
-		return getPlayerLookingSpot(player, 5.0D);
-	}
-
-	public static MovingObjectPosition getPlayerLookingSpot(EntityPlayer player, double maxDistance)
-	{
-		Vec3 lookAt = player.getLook(1.0F);
-		Vec3 playerPos = Vec3.createVectorHelper(player.posX, player.posY + (player.getEyeHeight() - player.getDefaultEyeHeight()), player.posZ);
-		Vec3 pos1 = playerPos.addVector(0.0D, player.getEyeHeight(), 0.0D);
-		Vec3 pos2 = pos1.addVector(lookAt.xCoord * maxDistance, lookAt.yCoord * maxDistance, lookAt.zCoord * maxDistance);
-		return player.worldObj.rayTraceBlocks(pos1, pos2);
-	}
-
-	public static void addOp(String playername)
-	{
-		MinecraftServer mcServer = MinecraftServer.getServer();
-		GameProfile gameprofile = getGameProfileByUsername(playername);
-		if (gameprofile != null) {
-			MinecraftServer.getServer().getConfigurationManager().func_152605_a(gameprofile);
-		} else {
-			logger.error("Failed to add op to vanilla OPs list.");
-		}
-		opslist.add(playername);
-	}
-
-	public static void removeOp(String playername)
-	{
-		EntityPlayerMP player = getPlayerByUsername(playername);
-		MinecraftServer.getServer().getConfigurationManager().func_152610_b(player.getGameProfile());
-		opslist.remove(playername);
-	}
-
-	public static UserListOps getOps()
-	{
-		return MinecraftServer.getServer().getConfigurationManager().func_152603_m();
-	}
-
-	public static void loadOps()
-	{
-		try
-		{
-			logger.info("Checking OPs...");
-
-			MinecraftServer mcServer = MinecraftServer.getServer();
-
-			addOp(mcServer.getServerOwner());
-			logger.info("Owner " + mcServer.getServerOwner() + " registered.");
-
-			File folder = new File(Minecraft.getMinecraft().mcDataDir + "/config/CustomLANReborn/");
-			File var3 = ops;
-			if (!var3.exists())
-			{
-				folder.mkdirs();
-				var3.createNewFile();
-				logger.info("OPs checked.");
-				return;
-			}
-			FileReader var4 = new FileReader(var3);
-			BufferedReader var5 = new BufferedReader(var4);
-			String var7 = null;
-			while ((var7 = var5.readLine()) != null) {
-				try
-				{
-					addOp(var7);
-					logger.info("Loaded OP " + var7 + ".");
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-					logger.error("Failed to load an op.");
-				}
-			}
-			var5.close();
-			var4.close();
-
-			logger.info("OPs checked.");
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			logger.error("Could not load OPs");
+		catch (IllegalAccessException e) {
+			CustomLANReborn.logger.error("Unable to set max players: " + e);
 		}
 	}
-
-	public static void loadBanned() {}
-
-	public static void syncConfig()
-	{
-		CustomLANRebornConfig.GuiCustomLan.serverMOTD = config.getString("serverMOTD", "general", CustomLANRebornConfig.GuiCustomLan.serverMOTDRef, "");
-		CustomLANRebornConfig.GuiCustomLan.serverMaxPlayers = config.getInt("serverMaxPlayers", "general", CustomLANRebornConfig.GuiCustomLan.serverMaxPlayersRef, 1, Integer.MAX_VALUE, "");
-		CustomLANRebornConfig.GuiCustomLan.serverOnlineMode = config.getBoolean("serverOnlineMode", "general", CustomLANRebornConfig.GuiCustomLan.serverOnlineModeRef, "");
-		CustomLANRebornConfig.GuiCustomLan.serverCanSpawnAnimals = config.getBoolean("serverCanSpawnAnimals", "general", CustomLANRebornConfig.GuiCustomLan.serverCanSpawnAnimalsRef, "");
-		CustomLANRebornConfig.GuiCustomLan.serverCanSpawnNPCs = config.getBoolean("serverCanSpawnNPCs", "general", CustomLANRebornConfig.GuiCustomLan.serverCanSpawnNPCsRef, "");
-		CustomLANRebornConfig.GuiCustomLan.serverAllowPvP = config.getBoolean("serverAllowPvP", "general", CustomLANRebornConfig.GuiCustomLan.serverAllowPvPRef, "");
-		CustomLANRebornConfig.GuiCustomLan.serverAllowFlight = config.getBoolean("serverAllowFlight", "general", CustomLANRebornConfig.GuiCustomLan.serverAllowFlightRef, "");
-		if (config.hasChanged()) {
-			config.save();
-		}
+	
+	private void setServerConfigOptions() {
+		CommonUtil.mcServer().setAllowFlight(ConfigHandler.GuiCustomLan.getServerAllowFlight());
+		CommonUtil.mcServer().setAllowPvp(ConfigHandler.GuiCustomLan.getServerAllowPvP());
+		CommonUtil.mcServer().setCanSpawnAnimals(ConfigHandler.GuiCustomLan.getServerCanSpawnAnimals());
+		CommonUtil.mcServer().setCanSpawnNPCs(ConfigHandler.GuiCustomLan.getServerCanSpawnNPCs());
+		CommonUtil.mcServer().setMOTD(ConfigHandler.GuiCustomLan.getServerMOTD());
+		CommonUtil.mcServer().setOnlineMode(ConfigHandler.GuiCustomLan.getServerOnlineMode());
 	}
-
-	private void registerCommands()
-	{
+	
+	public static void registerCommands() {
 		logger.info("Registering commands..");
-		ICommandManager commandManager = MinecraftServer.getServer().getCommandManager();
-		ServerCommandManager SCM = (ServerCommandManager)commandManager;
+		ICommandManager commandManager = CommonUtil.mcServer().getCommandManager();
+		ServerCommandManager SCM = (ServerCommandManager) commandManager;
 		SCM.registerCommand(new CommandLANBack());
-
 		SCM.registerCommand(new CommandLANBroadcast());
-
 		SCM.registerCommand(new CommandLANEat());
 		SCM.registerCommand(new CommandLANExplosion());
 		SCM.registerCommand(new CommandLANFireball());
@@ -326,10 +167,8 @@ public class CustomLANReborn
 		SCM.registerCommand(new CommandLANHome());
 		SCM.registerCommand(new CommandLANKick());
 		SCM.registerCommand(new CommandLANLightning());
-
 		SCM.registerCommand(new CommandLANPM());
 		SCM.registerCommand(new CommandLANReload());
-
 		SCM.registerCommand(new CommandLANRemoveWarp());
 		SCM.registerCommand(new CommandLANSaveAll());
 		SCM.registerCommand(new CommandLANSaveOff());
@@ -338,10 +177,8 @@ public class CustomLANReborn
 		SCM.registerCommand(new CommandLANSetWarp());
 		SCM.registerCommand(new CommandLANSetSpawn());
 		SCM.registerCommand(new CommandLANSpawn());
-
 		SCM.registerCommand(new CommandLANStop());
 		SCM.registerCommand(new CommandLANTp());
-
 		SCM.registerCommand(new CommandLANViewMOTD());
 		SCM.registerCommand(new CommandLANWarp());
 		SCM.registerCommand(new CommandLANWarpList());

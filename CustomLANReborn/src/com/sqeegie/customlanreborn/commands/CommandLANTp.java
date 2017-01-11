@@ -3,8 +3,9 @@ package com.sqeegie.customlanreborn.commands;
 import java.util.List;
 
 import com.sqeegie.customlanreborn.commands.CommandLANBase;
-import com.sqeegie.customlanreborn.config.GuiCustomLANRebornPermissions;
 import com.sqeegie.customlanreborn.core.CustomLANReborn;
+import com.sqeegie.customlanreborn.handlers.PermissionsHandler;
+import com.sqeegie.customlanreborn.util.PlayerUtil;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
@@ -33,7 +34,7 @@ extends CommandLANBase {
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
         //return GuiCustomLANRebornPermissions.canSenderUse(this.getCommandName()) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
-        return (GuiCustomLANRebornPermissions.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
+        return (PermissionsHandler.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
     }
 
     @Override
@@ -49,7 +50,7 @@ extends CommandLANBase {
             try {
                 for (String s : players) {
                     if (!s.toLowerCase().startsWith(par2ArrayOfStr[0].toLowerCase())) continue;
-                    par2ArrayOfStr[0] = CustomLANReborn.getPlayerByUsername(s).getDisplayName();
+                    par2ArrayOfStr[0] = PlayerUtil.getPlayerByUsername(s).getDisplayName();
                     break;
                 }
             }
@@ -66,7 +67,7 @@ extends CommandLANBase {
                 try {
                     for (String s : players) {
                         if (!s.toLowerCase().startsWith(par2ArrayOfStr[par2ArrayOfStr.length - 1].toLowerCase())) continue;
-                        par2ArrayOfStr[par2ArrayOfStr.length - 1] = CustomLANReborn.getPlayerByUsername(s.toLowerCase()).getDisplayName().toLowerCase();
+                        par2ArrayOfStr[par2ArrayOfStr.length - 1] = PlayerUtil.getPlayerByUsername(s.toLowerCase()).getDisplayName().toLowerCase();
                         break;
                     }
                 }

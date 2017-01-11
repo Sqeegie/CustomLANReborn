@@ -2,8 +2,8 @@ package com.sqeegie.customlanreborn.commands;
 
 import java.util.List;
 
-import com.sqeegie.customlanreborn.config.GuiCustomLANRebornPermissions;
-import com.sqeegie.customlanreborn.config.GuiShareToLAN;
+import com.sqeegie.customlanreborn.handlers.PermissionsHandler;
+import com.sqeegie.customlanreborn.handlers.LANHandler;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -22,7 +22,7 @@ extends CommandLANBase {
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
         //return GuiCustomLANRebornPermissions.canSenderUse(this.getCommandName()) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
-        return (GuiCustomLANRebornPermissions.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
+        return (PermissionsHandler.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
     }
 
     @Override
@@ -36,7 +36,7 @@ extends CommandLANBase {
             throw new WrongUsageException("/reload", new Object[0]);
         }
         CommandLANStop.terminateServer(var1);
-        GuiShareToLAN.shareToLAN();
+        LANHandler.shareToLAN();
     }
 
     public List addTabCompletionOptions(ICommandSender var1, String[] var2) {

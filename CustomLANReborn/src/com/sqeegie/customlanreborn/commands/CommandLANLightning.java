@@ -2,8 +2,8 @@ package com.sqeegie.customlanreborn.commands;
 
 import java.util.List;
 
-import com.sqeegie.customlanreborn.config.GuiCustomLANRebornPermissions;
-import com.sqeegie.customlanreborn.core.CustomLANReborn;
+import com.sqeegie.customlanreborn.handlers.PermissionsHandler;
+import com.sqeegie.customlanreborn.util.PlayerUtil;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -35,7 +35,7 @@ extends CommandLANBase {
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
         //return GuiCustomLANRebornPermissions.canSenderUse(this.getCommandName()) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
-        return (GuiCustomLANRebornPermissions.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
+        return (PermissionsHandler.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
     }
 
     @Override
@@ -89,7 +89,7 @@ extends CommandLANBase {
     public void processCommand(ICommandSender sender, String[] args)
     {
     	
-    	EntityPlayerMP senderz = CustomLANReborn.getPlayerByUsername(sender.getCommandSenderName());
+    	EntityPlayerMP senderz = PlayerUtil.getPlayerByUsername(sender.getCommandSenderName());
         if (args.length == 1)
         {
             if (args[0].toLowerCase().equals("me"))
@@ -100,7 +100,7 @@ extends CommandLANBase {
             }
             else
             {
-                EntityPlayerMP player = CustomLANReborn.getPlayerByMatchOrUsername(sender, args[0]);
+                EntityPlayerMP player = PlayerUtil.getPlayerByMatchOrUsername(sender, args[0]);
                 if (player != null)
                 {
                     player.worldObj.addWeatherEffect(new EntityLightningBolt(player.worldObj, player.posX, player.posY, player.posZ));
@@ -126,7 +126,7 @@ extends CommandLANBase {
         }
         else
         {
-            MovingObjectPosition mop = CustomLANReborn.getPlayerLookingSpot(senderz, 500);
+            MovingObjectPosition mop = PlayerUtil.getPlayerLookingSpot(senderz, 500);
             if (mop == null)
             {
                 //ChatOutputHandler.chatError(sender, "You must first look at the ground!");

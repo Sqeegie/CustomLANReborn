@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.mojang.authlib.GameProfile;
-import com.sqeegie.customlanreborn.config.GuiCustomLANRebornPermissions;
+import com.sqeegie.customlanreborn.handlers.PermissionsHandler;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -33,7 +33,7 @@ extends CommandLANBase {
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
         //return GuiCustomLANRebornPermissions.canSenderUse(this.getCommandName()) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
-        return (GuiCustomLANRebornPermissions.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
+        return (PermissionsHandler.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
     }
 
     @Override

@@ -17,6 +17,7 @@ import java.util.Set;
 
 import com.mojang.authlib.GameProfile;
 import com.sqeegie.customlanreborn.core.CustomLANReborn;
+import com.sqeegie.customlanreborn.handlers.PermissionsHandler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandException;
@@ -97,6 +98,7 @@ public class CommandLANDeop extends CommandLANBase {
             {
                 minecraftserver.getConfigurationManager().func_152610_b(gameprofile);
                 func_152373_a(par1ICommandSender, this, "commands.deop.success", new Object[] {par2ArrayOfStr[0]});
+                PermissionsHandler.removeOp(gameprofile.getName());
             }
         }
         else

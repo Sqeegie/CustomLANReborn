@@ -6,8 +6,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
-import com.sqeegie.customlanreborn.core.CommandLANBase;
-import com.sqeegie.customlanreborn.config.GuiCustomLANRebornPermissions;
+import com.sqeegie.customlanreborn.handlers.PermissionsHandler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
@@ -17,7 +16,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 
 public class CommandLANBack
-extends CommandLANBase {
+extends CommandParent {
     @Override
     public String getCommandName() {
         return "back";
@@ -30,7 +29,7 @@ extends CommandLANBase {
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
         //return GuiCustomLANRebornPermissions.canSenderUse(this.getCommandName()) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
-    	return (GuiCustomLANRebornPermissions.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(getRequiredPermissionLevel(), getCommandName());
+    	return (PermissionsHandler.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(getRequiredPermissionLevel(), getCommandName());
     }
 
     @Override

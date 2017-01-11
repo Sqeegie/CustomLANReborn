@@ -3,8 +3,9 @@ package com.sqeegie.customlanreborn.commands;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import com.sqeegie.customlanreborn.config.GuiCustomLANRebornPermissions;
 import com.sqeegie.customlanreborn.core.CustomLANReborn;
+import com.sqeegie.customlanreborn.handlers.PermissionsHandler;
+import com.sqeegie.customlanreborn.util.PlayerUtil;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
@@ -32,7 +33,7 @@ extends CommandLANBase {
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
         //return GuiCustomLANRebornPermissions.canSenderUse(this.getCommandName()) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
-        return (GuiCustomLANRebornPermissions.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
+        return (PermissionsHandler.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
     }
 
     @Override
@@ -98,7 +99,7 @@ extends CommandLANBase {
             String[] arr = Minecraft.getMinecraft().getIntegratedServer().getAllUsernames();
             for (int i = 0; i < arr.length; ++i) {
                 if (arr[i] == Minecraft.getMinecraft().getIntegratedServer().getServerOwner()) continue;
-                EntityPlayerMP player = CustomLANReborn.getPlayerByUsername(arr[i]);
+                EntityPlayerMP player = PlayerUtil.getPlayerByUsername(arr[i]);
                 player.playerNetServerHandler.kickPlayerFromServer("Server is shutting down.");
             }
         }

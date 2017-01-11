@@ -2,8 +2,8 @@ package com.sqeegie.customlanreborn.commands;
 
 import java.util.List;
 
-import com.sqeegie.customlanreborn.config.GuiCustomLANRebornPermissions;
-import com.sqeegie.customlanreborn.core.CustomLANReborn;
+import com.sqeegie.customlanreborn.handlers.PermissionsHandler;
+import com.sqeegie.customlanreborn.util.PlayerUtil;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
@@ -27,7 +27,7 @@ extends CommandLANBase {
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
         //return GuiCustomLANRebornPermissions.canSenderUse(this.getCommandName()) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
-        return (GuiCustomLANRebornPermissions.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
+        return (PermissionsHandler.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
     }
 
     @Override
@@ -38,7 +38,7 @@ extends CommandLANBase {
     @Override
     public void processCommand(ICommandSender par1ICommandSender, String[] par2ArrayOfStr) {
         if (par2ArrayOfStr.length > 0 && par2ArrayOfStr[0].length() > 1) {
-            EntityPlayerMP var3 = CustomLANReborn.getPlayerByUsername(par2ArrayOfStr[0]);
+            EntityPlayerMP var3 = PlayerUtil.getPlayerByUsername(par2ArrayOfStr[0]);
             EntityPlayerMP sender = CommandLANKick.getCommandSenderAsPlayer((ICommandSender)par1ICommandSender);
             if (!par2ArrayOfStr[0].equalsIgnoreCase(sender.mcServer.getServerOwner())) {
                 String var4 = "You have been kicked from this server by " + sender.getDisplayName() + ".";

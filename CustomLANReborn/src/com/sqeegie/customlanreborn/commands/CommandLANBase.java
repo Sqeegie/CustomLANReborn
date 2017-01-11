@@ -1,6 +1,7 @@
 package com.sqeegie.customlanreborn.commands;
 
-import com.sqeegie.customlanreborn.config.GuiCustomLANRebornPermissions;
+import com.sqeegie.customlanreborn.handlers.PermissionsHandler;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 
@@ -9,7 +10,7 @@ public class CommandLANBase extends CommandBase {
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
         //return GuiCustomLANRebornPermissions.canSenderUse(this.getCommandName()) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
     	// TODO: Remove commented out code in each canCommandSenderUse method in each command class.
-        return (GuiCustomLANRebornPermissions.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
+        return (PermissionsHandler.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
     }
 
     public String getCommandName() {

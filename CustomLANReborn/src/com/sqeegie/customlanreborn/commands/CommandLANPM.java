@@ -2,8 +2,8 @@ package com.sqeegie.customlanreborn.commands;
 
 import java.util.List;
 
-import com.sqeegie.customlanreborn.config.GuiCustomLANRebornPermissions;
-import com.sqeegie.customlanreborn.core.CustomLANReborn;
+import com.sqeegie.customlanreborn.handlers.PermissionsHandler;
+import com.sqeegie.customlanreborn.util.PlayerUtil;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -27,7 +27,7 @@ extends CommandLANBase {
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
         //return GuiCustomLANRebornPermissions.canSenderUse(this.getCommandName()) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
-        return (GuiCustomLANRebornPermissions.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
+        return (PermissionsHandler.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
     }
 
     @Override
@@ -43,7 +43,7 @@ extends CommandLANBase {
             try {
                 for (String s : players) {
                     if (!s.toLowerCase().startsWith(var2[0].toLowerCase())) continue;
-                    var3 = CustomLANReborn.getPlayerByUsername(s.toLowerCase());
+                    var3 = PlayerUtil.getPlayerByUsername(s.toLowerCase());
                     break;
                 }
                 var3.sendPlayerAbilities();

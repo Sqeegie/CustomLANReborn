@@ -2,8 +2,8 @@ package com.sqeegie.customlanreborn.commands;
 
 import java.util.List;
 
-import com.sqeegie.customlanreborn.config.GuiCustomLANRebornPermissions;
-import com.sqeegie.customlanreborn.core.CustomLANReborn;
+import com.sqeegie.customlanreborn.handlers.PermissionsHandler;
+import com.sqeegie.customlanreborn.util.PlayerUtil;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -29,7 +29,7 @@ extends CommandLANBase {
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
         //return GuiCustomLANRebornPermissions.canSenderUse(this.getCommandName()) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
-        return (GuiCustomLANRebornPermissions.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
+        return (PermissionsHandler.canSenderUse(getCommandName(), par1ICommandSender)) || par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
     }
 
     public int getRequiredPermissionLevel() {
@@ -59,8 +59,8 @@ extends CommandLANBase {
         worldServer.newExplosion((Entity)entityplayer, (double)hitVec.chunkPosX, (double)hitVec.chunkPosY, (double)hitVec.chunkPosZ, 5.0f, true, true);
         */
         World worldServer = MinecraftServer.getServer().getEntityWorld();
-        EntityPlayerMP player = CustomLANReborn.getPlayerByUsername(var1.getCommandSenderName());
-        MovingObjectPosition mop = CustomLANReborn.getPlayerLookingSpot(player, 500);
+        EntityPlayerMP player = PlayerUtil.getPlayerByUsername(var1.getCommandSenderName());
+        MovingObjectPosition mop = PlayerUtil.getPlayerLookingSpot(player, 500);
         if (mop == null)
         {
             var1.addChatMessage((IChatComponent)new ChatComponentTranslation("You must first look at the ground!", new Object[0]));

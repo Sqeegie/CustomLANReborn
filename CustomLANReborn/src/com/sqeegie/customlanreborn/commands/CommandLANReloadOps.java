@@ -2,7 +2,7 @@ package com.sqeegie.customlanreborn.commands;
 
 import java.util.List;
 
-import com.sqeegie.customlanreborn.core.CustomLANReborn;
+import com.sqeegie.customlanreborn.handlers.PermissionsHandler;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -31,9 +31,9 @@ extends CommandLANBase {
         if (var2.length != 0) {
             throw new WrongUsageException("/reloadops", new Object[0]);
         }
-        CustomLANReborn.loadOps();
+        PermissionsHandler.loadOps();
         //var1.addChatMessage((IChatComponent)new ChatComponentTranslation("Reloaded ops. Current ops are: " + MinecraftServer.getServer().getConfigurationManager().getOps().toString().replace("]", "").replace("[", ""), new Object[0]));
-        var1.addChatMessage((IChatComponent)new ChatComponentTranslation("Reloaded ops. Current ops are: " + CustomLANReborn.getOps().toString(), new Object[0]));
+        var1.addChatMessage((IChatComponent)new ChatComponentTranslation("Reloaded ops. Current ops are: " + PermissionsHandler.getOps().toString(), new Object[0]));
     }
 
     public List addTabCompletionOptions(ICommandSender var1, String[] var2) {

@@ -1,0 +1,5 @@
+Fix IP auto getter (returning incorrect IP)
+Fix incorrect IP error when putting in Hamachi's IP
+Add missing commands (op, deop, ban, unban, reloadops, spawnmob, ect.)
+Fix/Finish permissions
+Fix /help crash
