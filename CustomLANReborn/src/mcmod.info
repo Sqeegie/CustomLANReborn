@@ -1,13 +1,13 @@
 [
 {
-  "modid": "customlanreborn",
+  "modid": "CustomLAN",
   "name": "CustomLAN Reborn",
   "description": "A remake of the CustomLAN mod by CptHunter.",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "mcversion": "${mcversion}",
   "url": "http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1286897?comment=925",
   "updateUrl": "",
-  "authorList": ["Sqeegie"],
+  "authorList": ["CptHunter", "Sqeegie"],
   "credits": "Recreated by Sqeegie, originally designed by CptHunter.",
   "logoFile": "",
   "screenshots": [],

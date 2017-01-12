@@ -1,0 +1,89 @@
+
+
+<Add additional project notes and details here>
+
+
+===== Features =====
+The ability to enter custom IPs and ports in the singleplayer LAN menu. Other vanilla server options such can be set in the configuration file, such as:
+
+- Allow Flight (True/False)
+- Allow PvP (True/False)
+- Can Spawn Animals (True/False)
+- Can Spawn NPCs (True/False)
+- Message of the Day (String)
+- Max Players (Integer)
+- Online Mode (True/False)
+- Advanced Debug Msgs (True/False)
+
+In addition to manually changing these in the config file, there is a in-game config editor.
+
+Many additional commands to vanilla LAN: (Permissions are still NOT working as a vanilla server would. They are currently working as vanilla LAN Allow Cheats permissions work.)
+
+- /Back (Teleports you to latest deathpoint)
+- /Broadcast (Broadcasts a purple colored message to everyone on the server.)
+- /Kick [reason]
+- /Fireball
+- /Lightning
+- /God [OptionalPlayerName]
+- /GetTime (Returns a nice representation of the current world's time)
+- /Hat (Puts whatever item in your hand as a helmet!)
+- /Heal [OptionalPlayerName]
+- /Eat [OptionalPlayerName]
+- /PM
+- /Save-All
+- /Save-Off
+- /Save-On
+- /Stop
+- /SetHome
+- /Home
+- /ViewMOTD (View's server MOTD)
+- /SetWarp
+- /Warp
+- /RemoveWarp
+- /WarpList
+- /Spawn
+- /SetSpawn
+- /Reload
+
+
+===== Changelog =====
+
+v2.4.3 (1.7.10): (Current development build - unreleased)
+Link: <No compiled file>
+Forge version: 1.7.10 - 10.13.4.1614
+Changelog:
+- Major code cleaning and refactorization
+- Added initial framework for development debug messages - Will expand on this
+- Added a fix to the automatic IP parser returning the incorrect local IP - More testing potentially required
+- <Working on adding ASM manipulation in attempt to fix the /help crash>
+- <Attempted (and failed) to add vanilla and/or custom OPs/permissions to singleplayer intergrated server. Rethinking attack strategy.>
+
+v2.4.2 (1.7.10): (Current release)
+Link: http://www.mediafire.com/download/3av247c3ng1hhcw/CustomLAN_Reborn_-_v2.4.2.jar
+Forge version: 1.7.10 - 10.13.4.1614
+Changelog:
+- Added in-game GUI configuration (albeit slightly less fancy then the original)
+- Added /explosion
+- Added prep work for 1.8
+- Reworked config saving and loaded
+- Fixed wrong msg appearing on some commands
+
+v2.4.1 (1.7.10):
+Link: http://www.mediafire.com/download/i8g56un9n0y3pnh/CustomLAN_Reborn_-_v2.4.1.jar
+Forge version: 1.7.10 - 10.13.4.1614
+Changelog:
+- Moved the CustomLAN config folder into .minecraft/config. Also renamed it to CustomLANReborn
+- Fixed /eat not working on other players
+- Added /stop
+- Added /reload
+- Added /pm
+- Added /kick
+- Added /lightning
+- Added /broadcast
+- Added /back
+
+v2.4 (1.7.10):
+Link: http://www.mediafire.com/download/sntee6xjx77ajq3/CustomLAN_Reborn_1.7.10_v2.4.jar
+Forge version: 1.7.10 - 10.13.4.1614
+Changelog:
+- Initial update to 1.7.10

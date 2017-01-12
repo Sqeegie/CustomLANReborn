@@ -1,7 +1,14 @@
+KNOWN BUGS:
+- /help <randomnumber> will crash the game - May have to do with the /publish command.
+- Entering the IP for a tunneling program like Hamachi causes bind error and fails to work.
+
+TODO LIST:
+- Check to make sure all the commands, server options (allow flight, online mode, ect) are actually working after the code cleanup.
 - Fix incorrect IP error when putting in Hamachi's IP.
 - Fix/Finish permissions.
 - Fix /help crash. (By using ASM to remove vanilla's command register for /help?)
 - Add missing commands. (Op, deop, ban, unban, reloadops, spawnmob, ect.)
+- Finish implementing the new developer debug messages
 
 - Update to 1.8 and above?!?!?
 - Continue to clean and refactor code.

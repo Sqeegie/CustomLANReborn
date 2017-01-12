@@ -241,19 +241,19 @@ public class PermissionsHandler extends GuiScreen {
 	public static boolean canSenderUse(String Command, ICommandSender sender) {
 		checkOptions();
 
-		CustomLANReborn.logger.info("Checking perms for command " + Command + " and for player " + sender.getCommandSenderName() + ".");
+		CommonUtil.devMsg("Checking perms for command " + Command + " and for player " + sender.getCommandSenderName() + ".");
 		for (Map.Entry<String, Integer> entry : permMap.entrySet()) {
 			if (Command.equalsIgnoreCase((String) entry.getKey())) {
 				if (((Integer) entry.getValue()).intValue() == Everyone) {
-					CustomLANReborn.logger.info("Everyone - true");
+					CommonUtil.devMsg("Everyone - true");
 					return true;
 				}
 				if (((Integer) entry.getValue()).intValue() == OPOnly) {
 					if (PlayerUtil.isPlayerOP(sender.getCommandSenderName())) {
-						CustomLANReborn.logger.info("OPOnly - found name in list - true");
+						CommonUtil.devMsg("OPOnly - found name in list - true");
 						return true;
 					}
-					CustomLANReborn.logger.info("OPOnly - didn't find name in list - false");
+					CommonUtil.devMsg("OPOnly - didn't find name in list - false");
 					return false;
 				}
 			}
